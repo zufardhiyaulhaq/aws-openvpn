@@ -1,12 +1,15 @@
 ---
 - name: OpenVPN | package | Install requirement packages
   apt:
-    update_cache: yes
-    upgrade: yes
     pkg:
-    - apt-transport-https
+      - apt-transport-https
+    update_cache: yes
+
+- name: OpenVPN | package | Install requirement packages
+  apt:
+    pkg:
     - ca-certificates
-    - python-software-properties
+    - python3-software-properties
 
 - name: OpenVPN | package | Get official OpenVPN APT key
   get_url:
@@ -28,18 +31,12 @@
     state: present
     update_cache: yes
 
-- name: OpenVPN | package | Add debian backports
-  apt_repository:
-    repo: 'deb http://ftp.debian.org/debian {{ ansible_lsb.codename }}-backports main'
-    state: present
-    update_cache: yes
-
 - name: OpenVPN | package | Install required packages
   apt:
     pkg:
     - sudo
-    - python-pip
-    - python-virtualenv
+    - python3-pip
+    - python3-virtualenv
     - git
     - gawk
     - gnupg
@@ -47,3 +44,8 @@
     - wamerican-huge
     - openssl
     - openvpn
+
+- name: OpenVPN | package | Install pexpect via pip
+  pip:
+    name: "pexpect"
+    version: "3.3"

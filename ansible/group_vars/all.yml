@@ -8,7 +8,7 @@ openvpn_key_email: "zufardhiyaulhaq@gmail.com"
 easyrsa_dn_mode_cn_only: false
 
 local_creds_folder: "{{ playbook_dir }}/../fetched_creds/{{ openvpn_server_remote_host }}"
-openvpn_server_remote_host: "{{ ansible_default_ipv4.address }}"
+openvpn_server_remote_host: "{{ inventory_hostname }}"
 
 openvpn_instances:
   - {
@@ -41,5 +41,10 @@ dhparams_size: "{{ openvpn_key_size }}"
 
 path_word_dict: "/usr/share/dict/american-english-huge"
 
+load_iptables_rules: True
 iptables_path: "/sbin/iptables"
 openvpn_path_iptables_rules: "{{ openvpn_path }}/openvpn_iptables_rules.sh"
+
+clients_to_add:
+- "mobile"
+- "mac"

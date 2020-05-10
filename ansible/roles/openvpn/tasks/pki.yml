@@ -9,9 +9,9 @@
 
 - name: OpenVPN | PKI | Make local destination folder
   local_action:
-    file:
-      path: "{{ local_creds_folder }}/"
-      state: directory
+    module: file
+    path: "{{ local_creds_folder }}/"
+    state: directory
   become: False
 
 - name: OpenVPN | PKI | Generate a random server common name

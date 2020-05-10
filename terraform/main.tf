@@ -36,11 +36,38 @@ resource "aws_security_group" "vpn_sg" {
 }
 
 resource "aws_instance" "instance_openvpn_netflix" {
-  ami             = var.aws_ami
-  instance_type   = var.aws_instancetype
-  key_name        = aws_key_pair.vpn_keypair.key_name
-  security_groups = aws_security_group.vpn_sg.id
+  ami           = var.aws_ami
+  instance_type = var.aws_instancetype
+  key_name      = aws_key_pair.vpn_keypair.key_name
+  security_groups = [
+    "${aws_security_group.vpn_sg.name}",
+  ]
 }
 
+output "vm_public_ip" {
+  value = aws_instance.instance_openvpn_netflix.public_ip
+}
 
+output "vm_public_dns" {
+  value = aws_instance.instance_openvpn_netflix.public_dns
+}
 
+resource "null_resource" "delay" {
+  provisioner "local-exec" {
+    command = "sleep 30"
+  }
+
+  depends_on = [
+    aws_instance.instance_openvpn_netflix,
+  ]
+}
+
+resource "null_resource" "append_ansible_host" {
+  provisioner "local-exec" {
+    command = "echo '${aws_instance.instance_openvpn_netflix.public_ip} ansible_user=ubuntu ansible_become=yes ansible_python_interpreter=python3' >> ../ansible/hosts/hosts.ini"
+  }
+
+  depends_on = [
+    null_resource.delay,
+  ]
+}
