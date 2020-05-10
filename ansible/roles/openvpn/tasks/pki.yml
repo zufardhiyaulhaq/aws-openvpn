@@ -41,7 +41,7 @@
   local_action:
     module: lineinfile
     line: "ca_password: {{ ca_password_result.stdout }}"
-    path: "{{ inventory_dir }}/host_vars/{{ ansible_default_ipv4.address }}.yml"
+    path: "{{ inventory_dir }}/host_vars/{{ inventory_hostname }}.yml"
     create: true
   become: False
   when: ca_password is not defined
