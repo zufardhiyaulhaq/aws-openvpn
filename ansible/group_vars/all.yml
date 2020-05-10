@@ -1,0 +1,45 @@
+openvpn_key_country:  "ID"
+openvpn_key_province: "Jakarta"
+openvpn_key_city: "Jakarta"
+openvpn_key_org: "Personal"
+openvpn_key_ou: "Cloud"
+openvpn_key_email: "zufardhiyaulhaq@gmail.com"
+
+easyrsa_dn_mode_cn_only: false
+
+local_creds_folder: "{{ playbook_dir }}/../fetched_creds/{{ openvpn_server_remote_host }}"
+openvpn_server_remote_host: "{{ ansible_default_ipv4.address }}"
+
+openvpn_instances:
+  - {
+      proto: udp,
+      port: 1194,
+      mask: "10.9.0.0 255.255.255.0",
+      cidr: "10.9.0.0/24",
+      server_extra_options: ['push "redirect-gateway def1"'],
+      client_extra_options: [],
+  }
+
+openvpn_path: "/etc/openvpn"
+openvpn_path_pki: "{{ openvpn_path }}/pki"
+openvpn_path_keys: "{{ openvpn_path_pki }}/private"
+openvpn_path_certs: "{{ openvpn_path_pki }}/issued"
+openvpn_path_easyrsa: "{{ openvpn_path }}/easyrsa/easyrsa3"
+openvpn_path_reqs: "{{ openvpn_path_pki }}/reqs"
+openvpn_crl: "{{ openvpn_path_pki }}/crl.pem"
+openvpn_hmac_firewall: "{{ openvpn_path_pki }}/ta.key"
+openvpn_ca_cert: "{{ openvpn_path_pki }}/ca.crt"
+openvpn_server_common_name_file: "{{ openvpn_path }}/openvpn_server_common_name"
+openvpn_key_size: "2048"
+openvpn_cipher: "AES-256-CBC"
+openvpn_auth_digest: "SHA256"
+openvpn_tls_cipher: "TLS-DHE-DSS-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-GCM-SHA384:TLS-DHE-RSA-WITH-AES-256-CBC-SHA256:TLS-DHE-DSS-WITH-AES-256-CBC-SHA256"
+openvpn_easyrsa_version: "v3.0.3"
+
+dhparams_location: "{{ openvpn_path_pki }}/dh.pem"
+dhparams_size: "{{ openvpn_key_size }}"
+
+path_word_dict: "/usr/share/dict/american-english-huge"
+
+iptables_path: "/sbin/iptables"
+openvpn_path_iptables_rules: "{{ openvpn_path }}/openvpn_iptables_rules.sh"

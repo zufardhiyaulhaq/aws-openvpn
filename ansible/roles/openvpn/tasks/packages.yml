@@ -1,0 +1,49 @@
+---
+- name: OpenVPN | package | Install requirement packages
+  apt:
+    update_cache: yes
+    upgrade: yes
+    pkg:
+    - apt-transport-https
+    - ca-certificates
+    - python-software-properties
+
+- name: OpenVPN | package | Get official OpenVPN APT key
+  get_url:
+    url: https://swupdate.openvpn.net/repos/repo-public.gpg
+    dest: ~/openvpn.gpg
+
+- name: OpenVPN | package | Add the official OpenVPN APT key
+  apt_key:
+    file: ~/openvpn.gpg
+    state: present
+
+- name: OpenVPN | package | Reread ansible_lsb facts
+  setup:
+    filter: ansible_lsb*
+
+- name: OpenVPN | package | Add the official OpenVPN repository
+  apt_repository:
+    repo: 'deb https://build.openvpn.net/debian/openvpn/stable {{ ansible_lsb.codename }} main'
+    state: present
+    update_cache: yes
+
+- name: OpenVPN | package | Add debian backports
+  apt_repository:
+    repo: 'deb http://ftp.debian.org/debian {{ ansible_lsb.codename }}-backports main'
+    state: present
+    update_cache: yes
+
+- name: OpenVPN | package | Install required packages
+  apt:
+    pkg:
+    - sudo
+    - python-pip
+    - python-virtualenv
+    - git
+    - gawk
+    - gnupg
+    - iptables
+    - wamerican-huge
+    - openssl
+    - openvpn

@@ -1,0 +1,5 @@
+---
+- include: packages.yml
+- include: pki.yml
+- include: openvpn.yml
+- include: firewall.yml

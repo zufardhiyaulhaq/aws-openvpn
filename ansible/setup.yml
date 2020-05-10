@@ -1,0 +1,5 @@
+---
+- name: Install required software, configure and harden
+  hosts: openvpn
+  roles:
+    - openvpn
